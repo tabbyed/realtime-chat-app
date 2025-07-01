@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chatting with friends</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="center">
+        <h1>Chatting with friends</h1>
+        <h3 id="chat-header">Local</h3>
+
+        <form id="chat-selection">
+            <label for="chatroom">Chatroom:</label>
+            <input type="text" id="chatroom" name="chatroom">
+            <input type="submit" value="Change chatroom">
+        </form>
+
+        <textarea id="chatmessages" rows="10" cols="50" readonly></textarea>
+
+        <form id="chatroom-message">
+            <label for="message">Message:</label>
+            <input type="text" id="message" name="message">
+            <input type="submit" value="Send message">
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
