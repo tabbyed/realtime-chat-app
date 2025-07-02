@@ -30,4 +30,9 @@ function sendMessage() {
 window.onload = function() {
     document.getElementById('chat-selection').onsubmit = changeChatRoom;
     document.getElementById('chatroom-message').onsubmit = sendMessage;
+    
+    if(window.WebSocket){
+        console.log('supports websockets');
+        conn = new WebSocket('ws://' + document.location.host + "/ws")  // Fixed!
+    }
 }
