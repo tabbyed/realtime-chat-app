@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/gorilla/websocket"
 )
@@ -14,11 +15,17 @@ var (
 	}
 )
 
+type ClientList map[*Client]bool
+
 type Manager struct {
+	clients ClientList
+	sync.RWMutex
 }
 
 func NewManager() *Manager {
-	return &Manager{}
+	return &Manager{
+		clients: make(ClientList),
+	}
 }
 
 // servws - method which belongs to manager
@@ -31,5 +38,28 @@ func (m *Manager) servWS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	conn.Close()
+	client := NewClient(conn, m)
+
+	m.addClient(client)
+
+	go client.readMessages()
 }
+
+func (m *Manager) addClient(client *Client) {
+	m.Lock()
+	defer m.Unlock()
+
+	m.clients[client] = true
+}
+
+func (m *Manager) removeClient(client *Client) {
+	m.Lock()
+	defer m.Unlock()
+
+	if _, ok := m.clients[client]; ok {
+		client.connection.Close()
+		delete(m.clients, client)
+	}
+}
+
+// unbuffered connection prevents too many writes

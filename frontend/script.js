@@ -21,6 +21,7 @@ function sendMessage() {
     if (message) {
         var chatArea = document.getElementById('chatmessages');
         chatArea.value += 'You: ' + message + '\n';
+        conn.send(message)
         messageInput.value = ''; // Clear input
     }
     return false; // Don't submit form
