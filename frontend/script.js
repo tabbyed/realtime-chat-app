@@ -35,5 +35,10 @@ window.onload = function() {
     if(window.WebSocket){
         console.log('supports websockets');
         conn = new WebSocket('ws://' + document.location.host + "/ws")  // Fixed!
+
+        conn.onmessage = function(event) {
+            const chatArea = document.getElementById('chatmessages');
+            chatArea.value += 'Them: ' + event.data + '\n';
+        };
     }
 }
